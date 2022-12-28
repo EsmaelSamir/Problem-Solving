@@ -1,0 +1,15 @@
+	// https://leetcode.com/problems/unique-binary-search-trees/
+
+class Solution {
+    long long nCr(int n , int r){
+        if (r > n)return 0;
+        r = min(r, n - r);
+        long long temp = 1;
+        for (int i = 0 ; i < r ; i++)temp *= n - i , temp /= i + 1;
+        return temp;
+    }
+public:
+    int numTrees(int n) {
+        return nCr(2 * n, n) / (n + 1);
+    }
+};

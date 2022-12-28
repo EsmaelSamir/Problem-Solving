@@ -1,0 +1,14 @@
+	// https://leetcode.com/problems/valid-palindrome/
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        string cur = "";
+        for(auto i : s)if(isalnum(i)){
+            cur += tolower(i);
+        }
+        string tmp = cur;
+        reverse(tmp.begin(), tmp.end());
+        return tmp == cur;
+    }
+};

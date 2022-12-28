@@ -1,0 +1,60 @@
+	// https://leetcode.com/problems/regular-expression-matching/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+class Solution {
+    
+const int N = 2e3 + 5;
+
+    vector<vector<int>>dp;
+
+    bool sol(string &s, string &p, int i, int j, int n, int m){
+		//cout << "i = " << i << "  " << j << endl;
+        if(i >= n || j >= m){
+			int len = (m - j + 1) / 2;
+            return (i == n && j == m || (i == n && count(p.begin() + j, p.end(), '*') == len));
+        }
+        int &ret = dp[i][j];
+
+        if(~ret){
+            return ret;
+        }
+        ret = 0;
+
+		if(j + 1 < m && p[j + 1] == '*'){
+            for(int k = 0; k + i <= n && !ret; ++k){
+                if(k && p[j] != '.' && s[i + k - 1] != p[j]){
+					//cout << "i = " << i << " " << j << " " << k << endl;
+                    break;
+                }
+                ret |= sol(s, p, i + k, j + 2, n, m);
+            }
+        }
+        else if(isalpha(p[j])){
+            if(s[i] == p[j]){ // ok match current char
+                return ret = sol(s, p, i + 1, j + 1, n, m);
+            }
+            return ret;
+        }
+        else if(p[j] == '.'){  // ok  ? match current char
+            return ret = sol(s, p, i + 1, j + 1, n, m);
+        }
+        return ret;
+    }
+
+    bool Task_3(string &s, string &p){
+
+        int n = s.size(), m = p.size();
+        dp = vector<vector<int>>(n, vector<int>(m, -1));
+        return sol(s, p, 0, 0, n, m);
+
+    }
+public:
+    bool isMatch(string s, string p) {
+        return Task_3(s, p);
+    }
+};
+

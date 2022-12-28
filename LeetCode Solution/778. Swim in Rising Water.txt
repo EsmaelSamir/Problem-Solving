@@ -1,0 +1,41 @@
+	//https://leetcode.com/problems/swim-in-rising-water/
+
+#include<bits/stdc++.h>
+
+class Solution {
+public:
+    int dx[4] = {0, 0, 1, -1};
+    int dy[4] = {1, -1, 0, 0};
+    int dik(vector<vector<int>>& v, int n){
+        vector<vector<int>>vis(n, vector<int>(n, 1e9));
+        set<pair<int, pair<int, int>>>s;
+        s.insert({v[0][0], {0, 0}});
+        while(s.size()){
+            int x = s.begin()->second.first;
+            int y = s.begin()->second.second;
+            int cs = s.begin()->first;
+            s.erase(s.begin());
+            //cout<< x << " " << y << "  "<< cs << endl;
+            if(x == n - 1 && y == n - 1){
+                return cs;
+            }
+            if(vis[x][y] < cs){
+				continue;
+			}
+            vis[x][y] = cs;
+            for(int dir = 0; dir < 4; ++dir){
+                int nx = x + dx[dir];
+                int ny = y + dy[dir];
+                if(nx < 0 || nx >= n || ny < 0 || ny >= n || vis[nx][ny] <= max(cs, v[nx][ny])){
+                    continue;
+                }
+                s.insert({max(cs, v[nx][ny]), {nx, ny}});
+            }
+        }
+        return -1;
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        return dik(grid, grid.size());
+    }
+};
+

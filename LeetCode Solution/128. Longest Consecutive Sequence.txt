@@ -1,0 +1,28 @@
+	// https://leetcode.com/problems/longest-consecutive-sequence/submissions/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N = 1e3 + 5;
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int res = 0, cnt = 0;
+        set<int>s;
+        for(auto i : nums){
+            s.insert(i);
+        }
+        int pr = -1e9 - 5;
+        for(auto i : s){
+			if(i - pr != 1){
+				res = max(res, cnt);
+				cnt = 0;
+			}
+			++cnt;
+            pr = i;
+		}
+		res = max(res, cnt);
+        return res;
+    }
+};
